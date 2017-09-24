@@ -2,7 +2,7 @@
 * @Author: Administrator
 * @Date:   2017-09-19 22:34:02
 * @Last Modified by:   Administrator
-* @Last Modified time: 2017-09-22 23:34:18
+* @Last Modified time: 2017-09-24 13:27:22
 */
 window.onload=function(){
 
@@ -39,35 +39,46 @@ let pinbot=$('.danpin-bottom',danhz)[0];
 let xiaoleft=$('.xiao1')[0];
 let xiaoright=$('.xiao2')[0];
 let xar=$('a',xiaoright)[0];
-let xar1=$('a',xiaoleft)[0];
-console.log(xar);
+let xar1=$('a',xiaoleft)[0];;
 let hzw=parseInt(getComputedStyle(danhz,null).width);
 let phzw=parseInt(getComputedStyle(pinbot,null).left);
-console.log(phzw);
 let flagp=true;
+let i=0;
 let dant=setInterval(function(){
    if(flagp){
       animate(pinbot,{left:-hzw});
-      xar.style.color='#000';
-      xar1.style.cursor='default';
-      xar1.style.color='#ccc';
-      xar.onclick=function(){
-        animate(pinbot,{left:0});
-        flagp=true;
-      }
+      xar1.style.color='#000';
+       xar.style.color='#ccc';
       flagp=false;
+      i=1;
    }else{
        animate(pinbot,{left:0});
-       xar.style.color='#ccc';
-       xar1.style.color='#000';
-        xar.style.cursor='default';
-         xar1.onclick=function(){
-        animate(pinbot,{left:-hzw});
-        flagp=false;
-      }
+      xar.style.color='#000';
+       xar1.style.color='#ccc';
        flagp=true;
+       i=0;
    } 
 },6000);
+
+xar.onclick=function(){
+  if(i==1){
+    
+    return
+  }
+  i++;
+  animate(pinbot,{left:-hzw*i});
+  xar1.style.color='#000';
+  xar.style.color='#ccc';
+}
+xar1.onclick=function(){
+  if(i==0){
+    return
+  }
+  i--;
+  xar.style.color='#000';
+  xar1.style.color='#ccc';
+  animate(pinbot,{left:hzw*i});
+}
 
 
 ////////////////////////////////////////////////////////
@@ -215,6 +226,27 @@ function movel(){
 //   	 fn();
 //   }
 //////////////////////////////////////////////////////////////////
+//优化
+let windsh=innerHeight;
+let kuar=document.querySelectorAll('.jiadiankuang');
 
+let kuarr=[];
+kuar.forEach(elements=>{
+  kuarr.push(elements.offsetTop);
+})
+console.log(kuarr);
+window.onscroll=function(){
+  let chaokuai=document.body.scrollTop;
+  console.log(chaokuai);
+  kuarr.forEach((value,index)=>{
+    
+    if(chaokuai+windsh>value+300){
+      let imgs=kuar[index].getElementsByTagName('img');
+      for(let i=0;i<imgs.length;i++){
+        imgs[i].src=imgs[i].getAttribute('src1')
+      }
+    }
+  })
 
+}
 }
